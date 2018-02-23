@@ -22,7 +22,7 @@
 
  @package   behaviors
  @author    Remi Collet, Nelly Mahu-Lasson
- @copyright Copyright (c) 2010-2017 Behaviors plugin team
+ @copyright Copyright (c) 2010-2018 Behaviors plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/behaviors
@@ -93,7 +93,7 @@ function plugin_init_behaviors() {
    $PLUGIN_HOOKS['csrf_compliant']['behaviors'] = true;
 
    foreach ($CFG_GLPI["asset_types"] as $type) {
-      $PLUGIN_HOOKS['item_can']['behaviors'] = array($type => array('PluginBehaviorsConfig', 'item_can'));
+      $PLUGIN_HOOKS['item_can']['behaviors'][$type] = [$type => ['PluginBehaviorsConfig', 'item_can']];
    }
 
    $PLUGIN_HOOKS['add_default_where']['behaviors'] = array('PluginBehaviorsConfig', 'add_default_where');
@@ -104,23 +104,20 @@ function plugin_init_behaviors() {
 function plugin_version_behaviors() {
 
    return ['name'           => __('Behaviours', 'behaviors'),
-           'version'        => '1.6.0',
+           'version'        => '2.0.2',
            'license'        => 'AGPLv3+',
            'author'         => 'Remi Collet, Nelly Mahu-Lasson',
            'homepage'       => 'https://forge.glpi-project.org/projects/behaviors',
            'minGlpiVersion' => '9.2',
            'requirements'   => ['glpi' => ['min' => '9.2',
-                                           'max' => '9.3',
-                                           'dev' => true]]];
+                                           'max' => '9.3']]];
 }
-
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_behaviors_check_prerequisites() {
 
    // Strict version check (could be less strict, or could allow various version)
-   $version = rtrim(GLPI_VERSION, '-dev');
-   if (version_compare($version, '9.2', 'lt') || version_compare(GLPI_VERSION,'9.3','ge')) {
+   if (version_compare(GLPI_VERSION,'9.2','lt') || version_compare(GLPI_VERSION,'9.3','ge')) {
       echo "This plugin requires GLPI >= 9.2";
       return false;
    }
