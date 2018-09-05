@@ -1,5 +1,6 @@
 * text=auto !eol
 /LICENSE -text
+inc/itilsolution.class.php -text
 inc/problem.class.php -text
 inc/supplier_ticket.class.php -text
 inc/ticketsatisfaction.class.php -text
